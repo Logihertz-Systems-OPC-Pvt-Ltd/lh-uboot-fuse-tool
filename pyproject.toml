@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lh-uboot-fuse-tool"
+version = "0.1.0"
+description = "Logihertz Secure Boot OTP Hardware Fuse Burner, SRK/PKC Public Key Hash Synthesizer, Irreversible Bit-Transition Verifier, and 10-Rule Hardware Root-of-Trust Posture Auditor"
+readme = "README.md"
+authors = [
+    { name = "Sameer Tawade", email = "ops@logihertz.com" }
+]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.11"
+keywords = [
+    "secure-boot",
+    "otp-fuses",
+    "efuse",
+    "u-boot",
+    "srk-hash",
+    "tegra234",
+    "orin",
+    "root-of-trust",
+    "anti-rollback",
+    "hardware-security"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: System :: Hardware",
+    "Topic :: System :: Boot"
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://logihertz.com/"
+Repository = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-uboot-fuse-tool"
+Documentation = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-uboot-fuse-tool#readme"
+"Bug Tracker" = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-uboot-fuse-tool/issues"
+
+[project.scripts]
+lh-fuse = "lh_uboot_fuse_tool.cli:main"

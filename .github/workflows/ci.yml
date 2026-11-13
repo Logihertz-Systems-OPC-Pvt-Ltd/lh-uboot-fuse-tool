@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test & Verify (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: false
+
+      - name: Verify Python Syntax Compilation
+        run: |
+          python -m py_compile src/lh_uboot_fuse_tool/*.py tests/test_uboot_fuse_tool.py
+
+      - name: Execute Deterministic Unit Test Suite
+        run: |
+          PYTHONPATH=src python -m unittest discover -s tests -v
+
+      - name: Verify CLI Version & Help
+        run: |
+          PYTHONPATH=src python -m lh_uboot_fuse_tool.cli --version
+          PYTHONPATH=src python -m lh_uboot_fuse_tool.cli --help
+          ./bin/lh-fuse --version
+          ./bin/lh-fuse --help
+
+      - name: Verify Hardened Policy Audit (Expect Exit 0)
+        run: |
+          ./bin/lh-fuse scan --format table fixtures/hardened_fuse_policy.json
+          ./bin/lh-fuse scan --format json fixtures/hardened_fuse_policy.json
+          ./bin/lh-fuse scan --format sarif fixtures/hardened_fuse_policy.json
+
+      - name: Verify Vulnerable Policy Audit Detection (Expect Exit 1)
+        run: |
+          set +e
+          ./bin/lh-fuse scan fixtures/vulnerable_fuse_policy.json
+          STATUS=$?
+          set -e
+          if [ $STATUS -ne 1 ]; then
+            echo "Expected exit code 1 for vulnerable policy, got $STATUS"
+            exit 1
+          fi
+
+      - name: Verify SRK Public Key Hash Packing
+        run: |
+          ./bin/lh-fuse pack-srk fixtures/sample_srk_pubkeys.json --endian little
+          ./bin/lh-fuse pack-srk fixtures/sample_srk_pubkeys.json --endian big --format json
+
+      - name: Verify Provisioning Script Synthesis (U-Boot & Tegra234)
+        run: |
+          ./bin/lh-fuse gen-script fixtures/sample_srk_pubkeys.json --target uboot --bank 3 --word-offset 0
+          ./bin/lh-fuse gen-script fixtures/sample_srk_pubkeys.json --target tegra234
+
+      - name: Verify Physical eFuse Transition Monotonicity
+        run: |
+          ./bin/lh-fuse verify-transition --current 0x00000000 --target 0xA5A5F00D
+          set +e
+          ./bin/lh-fuse verify-transition --current 0x0000000F --target 0x0000000E
+          STATUS=$?
+          set -e
+          if [ $STATUS -ne 1 ]; then
+            echo "Expected exit code 1 for impossible 1->0 transition, got $STATUS"
+            exit 1
+          fi
+
+      - name: Verify Anti-Rollback SVN Thermometer Encoding
+        run: |
+          ./bin/lh-fuse encode-svn --version-num 5
+          ./bin/lh-fuse encode-svn --version-num 32 --format json

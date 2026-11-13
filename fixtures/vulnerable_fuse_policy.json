@@ -1,0 +1,22 @@
+{
+  "name": "Default Unfused Development Board Configuration (Vulnerable)",
+  "secure_boot_enforced": false,
+  "lifecycle_state": "OPEN_DEVELOPMENT",
+  "srk_hash_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+  "key_algorithm": "RSA-1024",
+  "jtag_debug_mode": "ENABLED",
+  "lock_srk_fuse_bank": false,
+  "disable_unauthenticated_serial_boot": false,
+  "enforce_signed_rcm_payloads": false,
+  "anti_rollback_svn_enabled": false,
+  "monotonic_svn_counter": 0,
+  "srk_total_key_slots": 1,
+  "srk_revocation_lock_guard": false,
+  "uboot_bootdelay": 3,
+  "disable_runtime_uboot_fuse_cmd": false,
+  "uboot_env_writeable": true,
+  "verify_readback_before_lock": false,
+  "vpp_voltage_rail_check": false,
+  "hsm_ceremony_audit_logged": false,
+  "bind_fuse_receipt_to_soc_uid": false
+}

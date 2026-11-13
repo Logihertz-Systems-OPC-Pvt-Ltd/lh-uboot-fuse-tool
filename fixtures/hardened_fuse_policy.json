@@ -1,0 +1,22 @@
+{
+  "name": "Hardened Mission-Critical Sovereign Edge Root-of-Trust Policy",
+  "secure_boot_enforced": true,
+  "lifecycle_state": "CLOSED_PRODUCTION",
+  "srk_hash_hex": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+  "key_algorithm": "RSA-4096",
+  "jtag_debug_mode": "DISABLED",
+  "lock_srk_fuse_bank": true,
+  "disable_unauthenticated_serial_boot": true,
+  "enforce_signed_rcm_payloads": true,
+  "anti_rollback_svn_enabled": true,
+  "monotonic_svn_counter": 5,
+  "srk_total_key_slots": 4,
+  "srk_revocation_lock_guard": true,
+  "uboot_bootdelay": -2,
+  "disable_runtime_uboot_fuse_cmd": true,
+  "uboot_env_writeable": false,
+  "verify_readback_before_lock": true,
+  "vpp_voltage_rail_check": true,
+  "hsm_ceremony_audit_logged": true,
+  "bind_fuse_receipt_to_soc_uid": true
+}
