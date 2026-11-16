@@ -1,0 +1,9 @@
+Package: lh-uboot-fuse-tool
+Version: 0.1.0
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Sameer Tawade <ops@logihertz.com>
+Homepage: https://www.logihertz.com
+Description: lh-fuse - Monotonic Hardware OTP eFuse Transition Invariant
+ Cryptographic Secure Boot OTP hardware eFuse provisioning utility synthesizing 4-slot Super Root Key (SRK/PKC) SHA-256 fuse tables, verifying irreversible 0->1 bit transitions, and generating U-Boot/Tegra234 fuse scripts.
